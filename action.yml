@@ -1,0 +1,19 @@
+name: 'Repository Sync Hub'
+author: 'ttionya <git@ttionya.com>'
+description: 'Sync current repository to other hub'
+
+branding:
+  icon: 'git-branch'
+  color: 'gray-dark'
+
+inputs:
+  target_repository:
+    description: 'Sync to target repository full clone URL (SSH Only)'
+    required: true
+  ssh_private_key:
+    description: 'SSH key used to authenticate with git operations'
+    required: false
+
+runs:
+  using: 'docker'
+  image: 'Dockerfile'
