@@ -8,10 +8,16 @@ branding:
 
 inputs:
   target_repository:
-    description: 'Sync to target repository full clone URL (SSH Only)'
+    description: 'Sync to target repository full clone URL. (Support SSH and HTTP URL)'
     required: true
   ssh_private_key:
-    description: 'SSH key used to authenticate with git operations'
+    description: 'SSH key used to authenticate with git operations. (with SSH URL)'
+    required: false
+  http_access_name:
+    description: 'Login name used to authenticate with git operations. (with HTTP URL)'
+    required: false
+  http_access_token:
+    description: 'Personal Access Token (PAT) used to authenticate with git operations. (with HTTP URL)'
     required: false
 
 runs:

@@ -11,19 +11,38 @@ TARGET_REPOSITORY=${INPUT_TARGET_REPOSITORY}
 
 #################### Function ####################
 ########################################
-# Check target repository is valid.
+# Check target repository URL type.
 # Arguments:
 #     None
-# Outputs:
-#     None / exit
 ########################################
 function check_target_repository() {
     local TARGET_REPOSITORY_HTTP_URL_MATCHED_COUNT=$(echo ${TARGET_REPOSITORY} | grep -cE '^http(s?)://')
 
     if [[ ${TARGET_REPOSITORY_HTTP_URL_MATCHED_COUNT} -gt 0 ]]; then
-        color red "Target repository only support SSH URL."
-        exit 1
+        # HTTP URL
+        color blue "use HTTP URL"
+        configure_token
+    else
+        # SSH URL
+        color blue "use SSH URL"
+        configure_ssh
     fi
+}
+
+########################################
+# Configure access token.
+# Arguments:
+#     None
+########################################
+function configure_token() {
+    git config --global credential.helper store
+
+    local TARGET_REPOSITORY_PROTOCOL=$(echo ${TARGET_REPOSITORY} | grep -oE '^http(s?)://')
+    color yellow "TARGET_REPOSITORY_PROTOCOL: ${TARGET_REPOSITORY_PROTOCOL}"
+    local TARGET_REPOSITORY_HOST=$(echo ${TARGET_REPOSITORY} | sed -r "s|${TARGET_REPOSITORY_PROTOCOL}||" | awk -F"/" '{ print $1 }')
+    color yellow "TARGET_REPOSITORY_HOST: ${TARGET_REPOSITORY_HOST}"
+
+    echo "${TARGET_REPOSITORY_PROTOCOL}${INPUT_HTTP_ACCESS_NAME}:${INPUT_HTTP_ACCESS_TOKEN}@${TARGET_REPOSITORY_HOST}" > ~/.git-credentials
 }
 
 ########################################
@@ -92,7 +111,6 @@ function display_variables() {
 
 #################### Actions ####################
 check_target_repository
-configure_ssh
 display_variables
 
 configure_git_remote
