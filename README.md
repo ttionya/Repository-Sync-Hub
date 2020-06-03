@@ -46,7 +46,7 @@ steps:
   - uses: ttionya/Repository-Sync-Hub@v1
     with:
       # Sync to target repository full clone URL.
-      target_repository: 'https://github.com/ttionya/Repository-Sync-Hub.git'
+      target_repository: 'https://github.com/ttionya/Repository-Sync-Hub-Test.git'
       # Login name used to authenticate with git operations.
       http_access_name: 'ttionya'
       # Personal Access Token (PAT) used to authenticate with git operations.
