@@ -15,7 +15,7 @@ jobs:
           token: ${{ secrets.HTTP_ACCESS_TOKEN }}
       - uses: ./
         with:
-          target_repository: 'https://github.com/ttionya/Repository-Sync-Hub.git'
+          target_repository: 'https://github.com/ttionya/Repository-Sync-Hub-Test.git'
           http_access_name: 'ttionya'
           http_access_token: ${{ secrets.HTTP_ACCESS_TOKEN }}
   gitee:
