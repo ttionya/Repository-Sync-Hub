@@ -1,4 +1,4 @@
-name: 'sync-to-other-hub'
+name: 'Sync to other hub (SSH URL)'
 
 on:
   push:

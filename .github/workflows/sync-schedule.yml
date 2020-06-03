@@ -1,4 +1,4 @@
-name: 'sync-to-other-hub-schedule'
+name: 'Sync to other hub by schedule'
 
 on:
   schedule:

@@ -1,0 +1,31 @@
+name: 'Sync to other hub (HTTP URL)'
+
+on:
+  push:
+  delete:
+
+jobs:
+  github:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+          # Note: If your target repository is GitHub repository with HTTP URL, make sure use your own access token.
+          token: ${{ secrets.HTTP_ACCESS_TOKEN }}
+      - uses: ./
+        with:
+          target_repository: 'https://github.com/ttionya/Repository-Sync-Hub.git'
+          http_access_name: 'ttionya'
+          http_access_token: ${{ secrets.HTTP_ACCESS_TOKEN }}
+  gitee:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: ./
+        with:
+          target_repository: 'https://gitee.com/ttionya/Repository-Sync-Hub-Test.git'
+          http_access_name: 'ttionya'
+          http_access_token: ${{ secrets.GITEE_HTTP_ACCESS_TOKEN }}
