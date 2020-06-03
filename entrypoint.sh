@@ -3,9 +3,9 @@
 # Docker entrypoint.sh
 # Author: ttionya <git@ttionya.com>
 
-. actions_functions.sh
-. actions_push.sh
-. actions_delete.sh
+. /app/actions_functions.sh
+. /app/actions_push.sh
+. /app/actions_delete.sh
 
 TARGET_REPOSITORY=${INPUT_TARGET_REPOSITORY}
 
