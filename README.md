@@ -6,6 +6,8 @@ A GitHub Actions for sync current repository to other hub.
 
 - Sync branches and tags to other repository (GitHub, GitLab, Gitee, etc.)
 - Automatic delete branches and tags that is deleted
+- Can triggered on `PUSH` and `DELETE` event
+- Can triggered on a timer (`SCHEDULE`)
 
 ## Usage
 
@@ -26,7 +28,7 @@ steps:
       ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
 ```
 
-More usage please see [sample workflows](/.github/workflows/test.yml).
+Please see [sample workflows](/.github/workflows/) for more usages.
 
 ## Thanks
 
