@@ -5,6 +5,7 @@ A GitHub Actions for sync current repository to other hub.
 ## Features
 
 - Sync branches and tags to other repository (GitHub, GitLab, Gitee, etc.)
+- Target repository support SSH and HTTP URL
 - Automatic delete branches and tags that is deleted
 - Can triggered on `PUSH` and `DELETE` event
 - Can triggered on a timer (`SCHEDULE`)
@@ -13,8 +14,10 @@ A GitHub Actions for sync current repository to other hub.
 
 Be sure to run the [actions/checkout](https://github.com/actions/checkout) in a step before this action.
 
+### SSH URL
+
 ```yml
-# File .github/workflows/sync.yml
+# File .github/workflows/sync-ssh.yml
 
 steps:
   - uses: actions/checkout@v2
@@ -22,13 +25,37 @@ steps:
       fetch-depth: 0
   - uses: ttionya/Repository-Sync-Hub@v1
     with:
-      # Sync to target repository full clone URL (SSH Only)
+      # Sync to target repository full clone URL.
       target_repository: 'git@github.com:ttionya/Repository-Sync-Hub-Test.git'
-      # SSH key used to authenticate with git operations (optional)
+      # SSH key used to authenticate with git operations.
       ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
 ```
 
-Please see [sample workflows](/.github/workflows/) for more usages.
+### HTTP URL
+
+```yml
+# File .github/workflows/sync-http.yml
+
+steps:
+  - uses: actions/checkout@v2
+    with:
+      fetch-depth: 0
+      # Be sure use your own access token when you want to sync to GitHub repository,
+      # only HTTP URL need this.
+      token: ${{ secrets.HTTP_ACCESS_TOKEN }}
+  - uses: ttionya/Repository-Sync-Hub@v1
+    with:
+      # Sync to target repository full clone URL.
+      target_repository: 'https://github.com/ttionya/Repository-Sync-Hub.git'
+      # Login name used to authenticate with git operations.
+      http_access_name: 'ttionya'
+      # Personal Access Token (PAT) used to authenticate with git operations.
+      http_access_token: ${{ secrets.HTTP_ACCESS_TOKEN }}
+```
+
+**Note:** Access token needs repository read/write access.
+
+You can see [sample workflows](/.github/workflows/) for more usages.
 
 ## Thanks
 
