@@ -2,7 +2,7 @@ name: 'Sync to other hub (SSH URL)'
 
 on:
   push:
-  delete:
+  # delete:
 
 jobs:
   github:

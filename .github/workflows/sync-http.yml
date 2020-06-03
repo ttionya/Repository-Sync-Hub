@@ -1,7 +1,7 @@
 name: 'Sync to other hub (HTTP URL)'
 
 on:
-  push:
+  # push:
   delete:
 
 jobs:
