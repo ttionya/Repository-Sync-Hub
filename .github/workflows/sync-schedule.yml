@@ -1,0 +1,29 @@
+name: 'sync-to-other-hub-schedule'
+
+on:
+  schedule:
+    # see https://help.github.com/en/actions/reference/events-that-trigger-workflows#scheduled-events-schedule for more information
+    # run task at hour 0, 6, 12, 18 every day
+    - cron: '0 0,6,12,18 * * *'
+
+jobs:
+  github:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: ./
+        with:
+          target_repository: 'git@github.com:ttionya/Repository-Sync-Hub-Test.git'
+          ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+  gitee:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          fetch-depth: 0
+      - uses: ./
+        with:
+          target_repository: 'git@gitee.com:ttionya/Repository-Sync-Hub-Test.git'
+          ssh_private_key: ${{ secrets.GITEE_SSH_PRIVATE_KEY }}
