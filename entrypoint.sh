@@ -3,6 +3,10 @@
 # Docker entrypoint.sh
 # Author: ttionya <git@ttionya.com>
 
+. actions_functions.sh
+. actions_push.sh
+. actions_delete.sh
+
 TARGET_REPOSITORY=${INPUT_TARGET_REPOSITORY}
 
 #################### Function ####################
@@ -17,7 +21,7 @@ function check_target_repository() {
     local TARGET_REPOSITORY_HTTP_URL_MATCHED_COUNT=$(echo ${TARGET_REPOSITORY} | grep -cE '^http(s?)://')
 
     if [[ ${TARGET_REPOSITORY_HTTP_URL_MATCHED_COUNT} -gt 0 ]]; then
-        echo "Target repository only support SSH URL."
+        color red "Target repository only support SSH URL."
         exit 1
     fi
 }
@@ -32,7 +36,7 @@ function check_target_repository() {
 function configure_ssh() {
     # configure known_hosts
     local TARGET_REPOSITORY_HOST=$(echo ${TARGET_REPOSITORY} | sed -r 's|(.*@)?(.*):.*|\2|')
-    echo "TARGET_REPOSITORY_HOST: ${TARGET_REPOSITORY_HOST}"
+    color yellow "TARGET_REPOSITORY_HOST: ${TARGET_REPOSITORY_HOST}"
     # ~ is /github/home/, not /root/
     mkdir -p /root/.ssh
     ssh-keyscan ${TARGET_REPOSITORY_HOST} > /root/.ssh/known_hosts
@@ -40,7 +44,7 @@ function configure_ssh() {
 
     # configure SSH private key
     if [[ -n "${INPUT_SSH_PRIVATE_KEY}" ]]; then
-        echo "find SSH private key"
+        color blue "find SSH private key"
 
         eval $(ssh-agent -s)
         echo "${INPUT_SSH_PRIVATE_KEY}" | tr -d '\r' | ssh-add - > /dev/null
@@ -48,7 +52,7 @@ function configure_ssh() {
 
     # test SSH connection
     local SSH_TEST_URL=$(echo ${TARGET_REPOSITORY} | awk -F':' '{ print $1 }')
-    echo "SSH_TEST_URL: ${SSH_TEST_URL}"
+    color yellow "SSH_TEST_URL: ${SSH_TEST_URL}"
     ssh -T ${SSH_TEST_URL}
 }
 
@@ -72,18 +76,18 @@ function configure_git_remote() {
 #     variables value
 ########################################
 function display_variables() {
-    echo "========================================"
-    echo "GITHUB_WORKFLOW: ${GITHUB_WORKFLOW}"
-    echo "GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}"
-    echo "GITHUB_EVENT_NAME: ${GITHUB_EVENT_NAME}"
-    echo "GITHUB_SHA: ${GITHUB_SHA}"
-    echo "GITHUB_REF: ${GITHUB_REF}"
-    echo "GITHUB_WORKSPACE: ${GITHUB_WORKSPACE}"
+    color yellow "========================================"
+    color yellow "GITHUB_WORKFLOW: ${GITHUB_WORKFLOW}"
+    color yellow "GITHUB_REPOSITORY: ${GITHUB_REPOSITORY}"
+    color yellow "GITHUB_EVENT_NAME: ${GITHUB_EVENT_NAME}"
+    color yellow "GITHUB_SHA: ${GITHUB_SHA}"
+    color yellow "GITHUB_REF: ${GITHUB_REF}"
+    color yellow "GITHUB_WORKSPACE: ${GITHUB_WORKSPACE}"
 
-    echo "TARGET_REPOSITORY: ${TARGET_REPOSITORY}"
-    echo "CURRENT_DIR: $(pwd)"
-    echo "WHOAMI: $(whoami)"
-    echo "========================================"
+    color yellow "TARGET_REPOSITORY: ${TARGET_REPOSITORY}"
+    color yellow "CURRENT_DIR: $(pwd)"
+    color yellow "WHOAMI: $(whoami)"
+    color yellow "========================================"
 }
 
 #################### Actions ####################
@@ -95,10 +99,14 @@ configure_git_remote
 
 case "${GITHUB_EVENT_NAME}" in
     push)
-        sh -c "/app/actions_push.sh ${GITHUB_REF}"
+        color blue "=============== PUSH ==============="
+
+        push_current_branch
         ;;
     delete)
-        sh -c "/app/actions_delete.sh"
+        color blue "=============== DELETE ==============="
+
+        delete_refs
         ;;
     *)
         break

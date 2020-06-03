@@ -1,16 +1,27 @@
 #!/bin/sh
 #
-# GitHubEventName: DELETE
+# Delete functions
+#
 # Author: ttionya <git@ttionya.com>
 
-echo "=============== DELETE ==============="
+#################### Function ####################
+########################################
+# Delete branches and tags that is deleted.
+# Arguments:
+#     None
+# Outputs:
+#     remote branches and tags
+########################################
+function delete_refs() {
+    mkdir -p /tmp/
 
-mkdir -p /tmp/
-git ls-remote origin | awk -F' ' '{ print $2 }' | grep -E '^refs' | grep -Ev '\^\{}$' | sort > /tmp/originBranch.txt
-echo "originBranch.txt"
-cat /tmp/originBranch.txt
-git ls-remote target | awk -F' ' '{ print $2 }' | grep -E '^refs' | grep -Ev '\^\{}$' | sort > /tmp/targetBranch.txt
-echo "targetBranch.txt"
-cat /tmp/targetBranch.txt
+    git ls-remote origin | awk -F' ' '{ print $2 }' | grep -E '^refs' | grep -Ev '\^\{}$' | sort > /tmp/originBranches.txt
+    color blue "origin branch list"
+    cat /tmp/originBranches.txt
 
-grep -Fvf /tmp/originBranch.txt /tmp/targetBranch.txt | xargs -I {} git push target -f --delete {}
+    git ls-remote target | awk -F' ' '{ print $2 }' | grep -E '^refs' | grep -Ev '\^\{}$' | sort > /tmp/targetBranches.txt
+    color blue "target branch list"
+    cat /tmp/targetBranches.txt
+
+    grep -Fvf /tmp/originBranches.txt /tmp/targetBranches.txt | xargs -I {} git push target -f --delete {}
+}

@@ -1,10 +1,15 @@
 #!/bin/sh
 #
-# GitHubEventName: PUSH
+# Push functions
+#
 # Author: ttionya <git@ttionya.com>
 
-REF="$1"
-
-echo "=============== PUSH ==============="
-
-git push target "${REF}:${REF}" -f --tags
+#################### Function ####################
+########################################
+# Push current branch to remote.
+# Arguments:
+#     None
+########################################
+function push_current_branch() {
+    git push target "${GITHUB_REF}:${GITHUB_REF}" -f --tags
+}
