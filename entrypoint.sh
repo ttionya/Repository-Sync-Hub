@@ -108,6 +108,11 @@ case "${GITHUB_EVENT_NAME}" in
 
         delete_refs
         ;;
+    schedule)
+        color blue "=============== SCHEDULE ==============="
+
+        delete_refs
+        push_refs
     *)
         break
         ;;
