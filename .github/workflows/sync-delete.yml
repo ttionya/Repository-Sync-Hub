@@ -1,8 +1,8 @@
-name: 'Sync to other hub (SSH URL)'
+name: 'Sync to other hub (SSH URL and DELETE)'
 
 on:
-  push:
-  # delete:
+  # push:
+  delete:
 
 jobs:
   github:
