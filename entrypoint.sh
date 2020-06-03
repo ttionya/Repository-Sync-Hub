@@ -113,6 +113,7 @@ case "${GITHUB_EVENT_NAME}" in
 
         delete_refs
         push_refs
+        ;;
     *)
         break
         ;;
