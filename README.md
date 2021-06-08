@@ -1,5 +1,7 @@
 # Repository Sync Hub
 
+![GitHub release (latest SemVer)](https://img.shields.io/github/v/release/ttionya/Repository-Sync-Hub?label=Release&logo=github) [![GitHub](https://img.shields.io/github/license/ttionya/vaultwarden-backup?label=License&logo=github)](https://github.com/ttionya/Repository-Sync-Hub/blob/master/LICENSE)
+
 A GitHub Actions for sync current repository to other hub.
 
 ## Features
