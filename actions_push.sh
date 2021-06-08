@@ -32,7 +32,7 @@ function push_refs() {
     git fetch origin
 
     color blue "checkout local branch from remote branch"
-    git branch -r --list "origin/*" | sed 's|[ \t]||g' | grep -v HEAD | xargs -I {} git checkout --track {}
+    git branch --remotes --list "origin/*" | sed 's|[ \t]||g' | grep -v "HEAD" | xargs -I {} git checkout --track {}
 
     color blue "push all branches"
     git push -u target -f --all
