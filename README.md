@@ -55,7 +55,7 @@ steps:
       http_access_token: ${{ secrets.HTTP_ACCESS_TOKEN }}
 ```
 
-**Note:** Access token needs repository read/write access.
+**Note:** Access token needs **workflow** access, it will automatically check the full access to the repository.
 
 You can see [sample workflows](/.github/workflows/) for more usages.
 
