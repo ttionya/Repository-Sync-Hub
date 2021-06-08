@@ -7,7 +7,7 @@
 . /app/actions_push.sh
 . /app/actions_delete.sh
 
-TARGET_REPOSITORY=${INPUT_TARGET_REPOSITORY}
+TARGET_REPOSITORY="${INPUT_TARGET_REPOSITORY}"
 
 #################### Function ####################
 ########################################
@@ -16,7 +16,7 @@ TARGET_REPOSITORY=${INPUT_TARGET_REPOSITORY}
 #     None
 ########################################
 function check_target_repository() {
-    local TARGET_REPOSITORY_HTTP_URL_MATCHED_COUNT=$(echo ${TARGET_REPOSITORY} | grep -cE '^http(s?)://')
+    local TARGET_REPOSITORY_HTTP_URL_MATCHED_COUNT=$(echo "${TARGET_REPOSITORY}" | grep -cE '^http(s?)://')
 
     if [[ ${TARGET_REPOSITORY_HTTP_URL_MATCHED_COUNT} -gt 0 ]]; then
         # HTTP URL
@@ -37,9 +37,10 @@ function check_target_repository() {
 function configure_token() {
     git config --global credential.helper store
 
-    local TARGET_REPOSITORY_PROTOCOL=$(echo ${TARGET_REPOSITORY} | grep -oE '^http(s?)://')
+    local TARGET_REPOSITORY_PROTOCOL="$(echo "${TARGET_REPOSITORY}" | grep -oE '^http(s?)://')"
+    local TARGET_REPOSITORY_HOST="$(echo "${TARGET_REPOSITORY}" | sed -r "s|${TARGET_REPOSITORY_PROTOCOL}||" | awk -F'/' '{ print $1 }')"
+
     color yellow "TARGET_REPOSITORY_PROTOCOL: ${TARGET_REPOSITORY_PROTOCOL}"
-    local TARGET_REPOSITORY_HOST=$(echo ${TARGET_REPOSITORY} | sed -r "s|${TARGET_REPOSITORY_PROTOCOL}||" | awk -F"/" '{ print $1 }')
     color yellow "TARGET_REPOSITORY_HOST: ${TARGET_REPOSITORY_HOST}"
 
     echo "${TARGET_REPOSITORY_PROTOCOL}${INPUT_HTTP_ACCESS_NAME}:${INPUT_HTTP_ACCESS_TOKEN}@${TARGET_REPOSITORY_HOST}" > ~/.git-credentials
@@ -54,11 +55,12 @@ function configure_token() {
 ########################################
 function configure_ssh() {
     # configure known_hosts
-    local TARGET_REPOSITORY_HOST=$(echo ${TARGET_REPOSITORY} | sed -r 's|(.*@)?(.*):.*|\2|')
+    local TARGET_REPOSITORY_HOST="$(echo "${TARGET_REPOSITORY}" | sed -r 's|(.*@)?(.*):.*|\2|')"
     color yellow "TARGET_REPOSITORY_HOST: ${TARGET_REPOSITORY_HOST}"
+
     # ~ is /github/home/, not /root/
     mkdir -p /root/.ssh
-    ssh-keyscan ${TARGET_REPOSITORY_HOST} > /root/.ssh/known_hosts
+    ssh-keyscan "${TARGET_REPOSITORY_HOST}" > /root/.ssh/known_hosts
     chmod 644 /root/.ssh/known_hosts
 
     # configure SSH private key
@@ -70,9 +72,9 @@ function configure_ssh() {
     fi
 
     # test SSH connection
-    local SSH_TEST_URL=$(echo ${TARGET_REPOSITORY} | awk -F':' '{ print $1 }')
+    local SSH_TEST_URL="$(echo "${TARGET_REPOSITORY}" | awk -F':' '{ print $1 }')"
     color yellow "SSH_TEST_URL: ${SSH_TEST_URL}"
-    ssh -T ${SSH_TEST_URL}
+    ssh -T "${SSH_TEST_URL}"
 }
 
 ########################################
@@ -83,7 +85,7 @@ function configure_ssh() {
 #     Git remote list
 ########################################
 function configure_git_remote() {
-    git remote add target ${TARGET_REPOSITORY}
+    git remote add target "${TARGET_REPOSITORY}"
     git remote -v
 }
 
