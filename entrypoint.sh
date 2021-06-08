@@ -135,6 +135,5 @@ case "${GITHUB_EVENT_NAME}" in
         push_refs
         ;;
     *)
-        break
         ;;
 esac
