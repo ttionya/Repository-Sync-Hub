@@ -95,6 +95,17 @@ function configure_git_remote() {
 }
 
 ########################################
+# Configure Git safe directory.
+# Arguments:
+#     None
+# Outputs:
+#     None
+########################################
+function configure_git_safe_directory() {
+    git config --global --add safe.directory "${GITHUB_WORKSPACE}"
+}
+
+########################################
 # Display some variables.
 # Arguments:
 #     None
@@ -120,6 +131,7 @@ function display_variables() {
 check_target_repository
 display_variables
 
+configure_git_safe_directory
 configure_git_remote
 
 case "${GITHUB_EVENT_NAME}" in
