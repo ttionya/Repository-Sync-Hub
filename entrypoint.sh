@@ -74,12 +74,8 @@ function configure_ssh() {
     # test SSH connection
     local SSH_TEST_URL="$(echo "${TARGET_REPOSITORY}" | awk -F':' '{ print $1 }')"
     color yellow "SSH_TEST_URL: ${SSH_TEST_URL}"
+    # Do not judge the exit code here, known github.com will return an error even if the connection is successful.
     ssh -T "${SSH_TEST_URL}"
-    if [[ $? != 0 ]]; then
-        color red "unable to connect to ${TARGET_REPOSITORY_HOST}"
-
-        exit 1
-    fi
 }
 
 ########################################
