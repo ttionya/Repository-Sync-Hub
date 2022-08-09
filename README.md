@@ -4,6 +4,8 @@
 
 A GitHub Actions for sync current repository to other hub.
 
+<br>
+
 ## Features
 
 - Sync branches and tags to other repository (GitHub, GitLab, Gitee, etc.)
@@ -11,6 +13,8 @@ A GitHub Actions for sync current repository to other hub.
 - Automatic delete branches and tags that is deleted
 - Can triggered on `PUSH` and `DELETE` event
 - Can triggered on a timer (`SCHEDULE`)
+
+<br>
 
 ## Usage
 
@@ -22,10 +26,15 @@ Be sure to run the [actions/checkout](https://github.com/actions/checkout) in a 
 # File .github/workflows/sync-ssh.yml
 
 steps:
-  - uses: actions/checkout@v2
+  -
+    name: Checkout
+    uses: actions/checkout@v3
     with:
+      # Must be specified as 0, otherwise git does not allow push because of shallow updates.
       fetch-depth: 0
-  - uses: ttionya/Repository-Sync-Hub@v1
+  -
+    name: Sync
+    uses: ttionya/Repository-Sync-Hub@v1
     with:
       # Sync to target repository full clone URL.
       target_repository: 'git@github.com:ttionya/Repository-Sync-Hub-Test.git'
@@ -39,13 +48,18 @@ steps:
 # File .github/workflows/sync-http.yml
 
 steps:
-  - uses: actions/checkout@v2
+  -
+    name: Checkout
+    uses: actions/checkout@v3
     with:
+      # Must be specified as 0, otherwise git does not allow push because of shallow updates.
       fetch-depth: 0
       # Be sure use your own access token when you want to sync to GitHub repository,
       # only HTTP URL need this.
       token: ${{ secrets.HTTP_ACCESS_TOKEN }}
-  - uses: ttionya/Repository-Sync-Hub@v1
+  -
+    name: Sync
+    uses: ttionya/Repository-Sync-Hub@v1
     with:
       # Sync to target repository full clone URL.
       target_repository: 'https://github.com/ttionya/Repository-Sync-Hub-Test.git'
@@ -59,12 +73,22 @@ steps:
 
 You can see [sample workflows](/.github/workflows/) for more usages.
 
+<br>
+
+## About Dependabot
+
+Dependabot triggered Actions can't access secrets now, you can view details [here](https://github.com/dependabot/dependabot-core/issues/3253#issuecomment-852541544). 
+
+<br>
+
 ## Thanks
 
 Inspired by the following actions which may be more suitable for your workflow.
 
 - [wei/git-sync](https://github.com/wei/git-sync)
 - [net-engine/github-repository-sync-action](https://github.com/net-engine/github-repository-sync-action)
+
+<br>
 
 ## License
 
