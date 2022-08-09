@@ -1,4 +1,4 @@
-FROM alpine:3.12
+FROM alpine:latest
 
 LABEL "repository"="https://github.com/ttionya/Repository-Sync-Hub" \
   "homepage"="https://github.com/ttionya/Repository-Sync-Hub" \
