@@ -11,7 +11,6 @@ jobs:
         name: Checkout
         uses: actions/checkout@v3
         with:
-          fetch-depth: 0
           # Note: If your target repository is GitHub repository with HTTP URL, make sure use your own access token.
           token: ${{ secrets.HTTP_ACCESS_TOKEN }}
       -
@@ -28,8 +27,6 @@ jobs:
       -
         name: Checkout
         uses: actions/checkout@v3
-        with:
-          fetch-depth: 0
       -
         name: Sync
         uses: ./
