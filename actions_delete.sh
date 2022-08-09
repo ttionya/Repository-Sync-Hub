@@ -13,28 +13,35 @@
 #     remote branches and tags
 ########################################
 function delete_refs() {
-    local ORIGIN_BRANCH_FILE="/tmp/originBranches.txt"
-    local TARGET_BRANCH_FILE="/tmp/targetBranches.txt"
-
     mkdir -p "/tmp/"
 
-    git ls-remote --refs --heads --tags origin | awk -F' ' '{ print $2 }' | sort > "${ORIGIN_BRANCH_FILE}"
+    local ORIGIN_REFS_FILE="/tmp/originRefs.txt"
+    local TARGET_REFS_FILE="/tmp/targetRefs.txt"
+
+    # list remote (origin) refs
+    local ORIGIN_REFS="$(git ls-remote --refs --heads --tags origin)"
     if [[ $? != 0 ]]; then
         color red "failed to fetch remote (origin) refs"
 
         exit 1
     fi
-    color blue "origin branch list"
-    cat "${ORIGIN_BRANCH_FILE}"
 
-    git ls-remote --refs --heads --tags target | awk -F' ' '{ print $2 }' | sort > "${TARGET_BRANCH_FILE}"
+    echo "${ORIGIN_REFS}" | awk -F' ' '{ print $2 }' | sort > "${ORIGIN_REFS_FILE}"
+    color blue "origin refs list"
+    cat "${ORIGIN_REFS_FILE}"
+
+    # list remote (target) refs
+    local TARGET_REFS="$(git ls-remote --refs --heads --tags target)"
     if [[ $? != 0 ]]; then
         color red "failed to fetch remote (target) refs"
 
         exit 1
     fi
-    color blue "target branch list"
-    cat "${TARGET_BRANCH_FILE}"
 
-    grep -Fvxf "${ORIGIN_BRANCH_FILE}" "${TARGET_BRANCH_FILE}" | xargs -I {} git push target -f --delete {}
+    echo "${TARGET_REFS}" | awk -F' ' '{ print $2 }' | sort > "${TARGET_REFS_FILE}"
+    color blue "target refs list"
+    cat "${TARGET_REFS_FILE}"
+
+    # diff
+    grep -Fvxf "${ORIGIN_REFS_FILE}" "${TARGET_REFS_FILE}" | xargs -I {} git push target -f --delete {}
 }

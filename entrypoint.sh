@@ -75,6 +75,11 @@ function configure_ssh() {
     local SSH_TEST_URL="$(echo "${TARGET_REPOSITORY}" | awk -F':' '{ print $1 }')"
     color yellow "SSH_TEST_URL: ${SSH_TEST_URL}"
     ssh -T "${SSH_TEST_URL}"
+    if [[ $? != 0 ]]; then
+        color red "unable to connect to ${TARGET_REPOSITORY_HOST}"
+
+        exit 1
+    fi
 }
 
 ########################################
