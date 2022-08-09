@@ -16,9 +16,9 @@ TARGET_REPOSITORY="${INPUT_TARGET_REPOSITORY}"
 #     None
 ########################################
 function check_target_repository() {
-    local TARGET_REPOSITORY_HTTP_URL_MATCHED_COUNT=$(echo "${TARGET_REPOSITORY}" | grep -cE '^http(s?)://')
+    local TARGET_REPOSITORY_HTTP_URL_MATCHED="$(echo "${TARGET_REPOSITORY}" | grep -E '^http(s?)://')"
 
-    if [[ ${TARGET_REPOSITORY_HTTP_URL_MATCHED_COUNT} -gt 0 ]]; then
+    if [[ -n "${TARGET_REPOSITORY_HTTP_URL_MATCHED}" ]]; then
         # HTTP URL
         color blue "use HTTP URL"
         configure_token
