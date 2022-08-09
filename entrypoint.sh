@@ -121,7 +121,7 @@ case "${GITHUB_EVENT_NAME}" in
     push)
         color blue "=============== PUSH ==============="
 
-        push_current_branch
+        push_current_ref
         ;;
     delete)
         color blue "=============== DELETE ==============="

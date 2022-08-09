@@ -6,12 +6,12 @@
 
 #################### Function ####################
 ########################################
-# Push current branch to remote.
+# Push current ref to remote.
 # Arguments:
 #     None
 ########################################
-function push_current_branch() {
-    git push target "${GITHUB_REF}:${GITHUB_REF}" -f --tags
+function push_current_ref() {
+    git push target "${GITHUB_REF}:${GITHUB_REF}" -f
 }
 
 ########################################
