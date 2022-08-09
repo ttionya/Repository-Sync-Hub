@@ -7,23 +7,30 @@ jobs:
   github:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      -
+        name: Checkout
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
-          # Note: If your target repository is GitHub repository with HTTP URL, make sure use your own access token.
-          token: ${{ secrets.HTTP_ACCESS_TOKEN }}
-      - uses: ./
+      -
+        name: Sync
+        uses: ./
         with:
           target_repository: 'https://github.com/ttionya/Repository-Sync-Hub-Test.git'
           http_access_name: 'ttionya'
           http_access_token: ${{ secrets.HTTP_ACCESS_TOKEN }}
+
   gitee:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      -
+        name: Checkout
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - uses: ./
+      -
+        name: Sync
+        uses: ./
         with:
           target_repository: 'https://gitee.com/ttionya/Repository-Sync-Hub-Test.git'
           http_access_name: 'ttionya'

@@ -10,20 +10,29 @@ jobs:
   github:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      -
+        name: Checkout
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - uses: ./
+      -
+        name: Sync
+        uses: ./
         with:
           target_repository: 'git@github.com:ttionya/Repository-Sync-Hub-Test.git'
           ssh_private_key: ${{ secrets.SSH_PRIVATE_KEY }}
+
   gitee:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      -
+        name: Checkout
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
-      - uses: ./
+      -
+        name: Sync
+        uses: ./
         with:
           target_repository: 'git@gitee.com:ttionya/Repository-Sync-Hub-Test.git'
           ssh_private_key: ${{ secrets.GITEE_SSH_PRIVATE_KEY }}
