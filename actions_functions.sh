@@ -26,71 +26,40 @@ function color() {
 export -f color
 
 ########################################
-# Command git with retry.
+# Command with retry.
 # Arguments:
-#     git command options
+#     command options
 # Returns:
 #     command return code
 # Outputs:
-#     git command output
+#     command output
 ########################################
-function git_retry() {
+function retry() {
     local RETRY_COUNT=3
     local RETRY_DELAY=2
     local COUNT=0
     local RETURN_CODE=0
 
     while [[ "${COUNT}" -lt "${RETRY_COUNT}" ]]; do
-        if [[ "${COUNT}" -gt 0 ]]; then
+        $*
+        RETURN_CODE=$?
+
+        if [[ "${RETURN_CODE}" -eq 0 ]]; then
+            break
+        fi
+
+        ((COUNT++))
+
+        if [[ "${COUNT}" -eq "${RETRY_COUNT}" ]]; then
+            color yellow "retried ${RETRY_COUNT} times, no more retries left" 1>&2
+        else
             color yellow "retry after ${RETRY_DELAY} seconds" 1>&2
+
             sleep "${RETRY_DELAY}"
         fi
-
-        git $*
-        RETURN_CODE=$?
-
-        if [[ "${RETURN_CODE}" -eq 0 ]]; then
-            break
-        fi
-
-        ((COUNT++))
     done
 
     return "${RETURN_CODE}"
 }
 
-export -f git_retry
-
-########################################
-# Command ssh-keyscan with retry.
-# Arguments:
-#     ssh-keyscan command options
-# Returns:
-#     command return code
-# Outputs:
-#     ssh-keyscan command output
-########################################
-function ssh_keyscan_retry() {
-    local RETRY_COUNT=5
-    local RETRY_DELAY=1
-    local COUNT=0
-    local RETURN_CODE=0
-
-    while [[ "${COUNT}" -lt "${RETRY_COUNT}" ]]; do
-        if [[ "${COUNT}" -gt 0 ]]; then
-            color yellow "retry after ${RETRY_DELAY} second" 1>&2
-            sleep "${RETRY_DELAY}"
-        fi
-
-        ssh-keyscan $*
-        RETURN_CODE=$?
-
-        if [[ "${RETURN_CODE}" -eq 0 ]]; then
-            break
-        fi
-
-        ((COUNT++))
-    done
-
-    return "${RETURN_CODE}"
-}
+export -f retry
