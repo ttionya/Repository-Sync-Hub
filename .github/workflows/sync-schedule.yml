@@ -4,7 +4,7 @@ on:
   schedule:
     # see https://help.github.com/en/actions/reference/events-that-trigger-workflows#scheduled-events-schedule for more information
     # run task at hour 0, 6, 12, 18 every day
-    - cron: '0 0,6,12,18 * * *'
+    - cron: '0 * * * *'
 
 jobs:
   github:
