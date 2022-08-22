@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Docker entrypoint.sh
 # Author: ttionya <git@ttionya.com>
