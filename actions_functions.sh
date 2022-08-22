@@ -22,3 +22,41 @@ function color() {
         none)    echo "$2" ;;
     esac
 }
+
+export -f color
+
+########################################
+# Git with retry.
+# Arguments:
+#     Git command
+# Returns:
+#     command return code
+# Outputs:
+#     colorful message
+########################################
+function git_retry() {
+    local RETRY_COUNT=3
+    local RETRY_DELAY=2
+    local COUNT=0
+    local RETURN_CODE=0
+
+    while [[ "${COUNT}" -lt "${RETRY_COUNT}" ]]; do
+        if [[ "${COUNT}" -gt 0 ]]; then
+            color yellow "retry after ${RETRY_DELAY} seconds" 1>&2
+            sleep "${RETRY_DELAY}"
+        fi
+
+        git $*
+        RETURN_CODE=$?
+
+        if [[ "${RETURN_CODE}" -eq 0 ]]; then
+            break
+        fi
+
+        ((COUNT++))
+    done
+
+    return "${RETURN_CODE}"
+}
+
+export -f git_retry

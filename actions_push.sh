@@ -11,7 +11,7 @@
 #     None
 ########################################
 function push_current_ref() {
-    git push target "${GITHUB_REF}:${GITHUB_REF}" -f
+    git_retry push target "${GITHUB_REF}:${GITHUB_REF}" -f
 }
 
 ########################################
@@ -29,8 +29,8 @@ function push_refs() {
     git branch --all
 
     # fetch all branches and tags from origin
-    git fetch origin
-    if [[ $? != 0 ]]; then
+    git_retry fetch origin
+    if [[ $? -ne 0 ]]; then
         color red "failed to fetch remote (origin) refs"
 
         exit 1
@@ -40,16 +40,16 @@ function push_refs() {
     git branch --remotes --list "origin/*" | sed 's|[ \t]||g' | grep -v "HEAD" | xargs -I {} git checkout --track {}
 
     color blue "push all branches"
-    git push -u target -f --all
-    if [[ $? != 0 ]]; then
+    git_retry push -u target -f --all
+    if [[ $? -ne 0 ]]; then
         color red "failed to push branches to remote (target)"
 
         exit 1
     fi
 
     color blue "push all tags"
-    git push -u target -f --tags
-    if [[ $? != 0 ]]; then
+    git_retry push -u target -f --tags
+    if [[ $? -ne 0 ]]; then
         color red "failed to push tags to remote (target)"
 
         exit 1
