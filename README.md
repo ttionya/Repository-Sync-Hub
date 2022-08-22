@@ -11,6 +11,7 @@ A GitHub Actions for sync current repository to other hub.
 - Sync branches and tags to other repository (GitHub, GitLab, Gitee, etc.)
 - Target repository support SSH and HTTP URL
 - Automatic delete branches and tags that is deleted
+- Retry on network errors
 - Can triggered on `PUSH` and `DELETE` event
 - Can triggered on a timer (`SCHEDULE`)
 
