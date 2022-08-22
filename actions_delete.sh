@@ -43,5 +43,5 @@ function delete_refs() {
     cat "${TARGET_REFS_FILE}"
 
     # diff
-    grep -Fvxf "${ORIGIN_REFS_FILE}" "${TARGET_REFS_FILE}" | xargs -I {} sh -c 'git_retry push target -f --delete "{}"'
+    grep -Fvxf "${ORIGIN_REFS_FILE}" "${TARGET_REFS_FILE}" | xargs -I {} bash -c 'git_retry push target -f --delete "{}"'
 }
