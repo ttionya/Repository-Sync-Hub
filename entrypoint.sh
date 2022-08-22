@@ -60,8 +60,14 @@ function configure_ssh() {
 
     # ~ is /github/home/, not /root/
     mkdir -p /root/.ssh
-    ssh-keyscan "${TARGET_REPOSITORY_HOST}" > /root/.ssh/known_hosts
-    chmod 644 /root/.ssh/known_hosts
+    local KNOWN_HOSTS_FILE="/root/.ssh/known_hosts"
+    ssh_keyscan_retry "${TARGET_REPOSITORY_HOST}" > "${KNOWN_HOSTS_FILE}"
+    chmod 644 "${KNOWN_HOSTS_FILE}"
+    if [[ ! -s "${KNOWN_HOSTS_FILE}" ]]; then
+        color red "ssh-keyscan failed"
+
+        exit 1
+    fi
 
     # configure SSH private key
     if [[ -n "${INPUT_SSH_PRIVATE_KEY}" ]]; then

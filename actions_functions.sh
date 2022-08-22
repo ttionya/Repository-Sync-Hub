@@ -26,13 +26,13 @@ function color() {
 export -f color
 
 ########################################
-# Git with retry.
+# Command git with retry.
 # Arguments:
-#     Git command
+#     git command options
 # Returns:
 #     command return code
 # Outputs:
-#     colorful message
+#     git command output
 ########################################
 function git_retry() {
     local RETRY_COUNT=3
@@ -60,3 +60,37 @@ function git_retry() {
 }
 
 export -f git_retry
+
+########################################
+# Command ssh-keyscan with retry.
+# Arguments:
+#     ssh-keyscan command options
+# Returns:
+#     command return code
+# Outputs:
+#     ssh-keyscan command output
+########################################
+function ssh_keyscan_retry() {
+    local RETRY_COUNT=5
+    local RETRY_DELAY=1
+    local COUNT=0
+    local RETURN_CODE=0
+
+    while [[ "${COUNT}" -lt "${RETRY_COUNT}" ]]; do
+        if [[ "${COUNT}" -gt 0 ]]; then
+            color yellow "retry after ${RETRY_DELAY} second" 1>&2
+            sleep "${RETRY_DELAY}"
+        fi
+
+        ssh-keyscan $*
+        RETURN_CODE=$?
+
+        if [[ "${RETURN_CODE}" -eq 0 ]]; then
+            break
+        fi
+
+        ((COUNT++))
+    done
+
+    return "${RETURN_CODE}"
+}
