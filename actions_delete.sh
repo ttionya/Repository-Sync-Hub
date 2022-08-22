@@ -15,11 +15,13 @@
 function delete_refs() {
     mkdir -p "/tmp/"
 
+    local ORIGIN_REFS
     local ORIGIN_REFS_FILE="/tmp/originRefs.txt"
+    local TARGET_REFS
     local TARGET_REFS_FILE="/tmp/targetRefs.txt"
 
     # list remote (origin) refs
-    local ORIGIN_REFS="$(git_retry ls-remote --refs --heads --tags origin)"
+    ORIGIN_REFS="$(git_retry ls-remote --refs --heads --tags origin)"
     if [[ $? -ne 0 ]]; then
         color red "failed to fetch remote (origin) refs"
 
@@ -31,7 +33,7 @@ function delete_refs() {
     cat "${ORIGIN_REFS_FILE}"
 
     # list remote (target) refs
-    local TARGET_REFS="$(git_retry ls-remote --refs --heads --tags target)"
+    TARGET_REFS="$(git_retry ls-remote --refs --heads --tags target)"
     if [[ $? -ne 0 ]]; then
         color red "failed to fetch remote (target) refs"
 
