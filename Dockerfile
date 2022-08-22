@@ -7,6 +7,6 @@ LABEL "repository"="https://github.com/ttionya/Repository-Sync-Hub" \
 COPY *.sh /app/
 
 RUN chmod +x /app/*.sh \
-  && apk add --no-cache git openssh-client
+  && apk add --no-cache bash git openssh-client
 
 ENTRYPOINT ["/app/entrypoint.sh"]

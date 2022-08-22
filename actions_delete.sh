@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/bash
 #
 # Delete functions
 #
@@ -19,8 +19,8 @@ function delete_refs() {
     local TARGET_REFS_FILE="/tmp/targetRefs.txt"
 
     # list remote (origin) refs
-    local ORIGIN_REFS="$(git ls-remote --refs --heads --tags origin)"
-    if [[ $? != 0 ]]; then
+    local ORIGIN_REFS="$(git_retry ls-remote --refs --heads --tags origin)"
+    if [[ $? -ne 0 ]]; then
         color red "failed to fetch remote (origin) refs"
 
         exit 1
@@ -31,8 +31,8 @@ function delete_refs() {
     cat "${ORIGIN_REFS_FILE}"
 
     # list remote (target) refs
-    local TARGET_REFS="$(git ls-remote --refs --heads --tags target)"
-    if [[ $? != 0 ]]; then
+    local TARGET_REFS="$(git_retry ls-remote --refs --heads --tags target)"
+    if [[ $? -ne 0 ]]; then
         color red "failed to fetch remote (target) refs"
 
         exit 1
@@ -43,5 +43,5 @@ function delete_refs() {
     cat "${TARGET_REFS_FILE}"
 
     # diff
-    grep -Fvxf "${ORIGIN_REFS_FILE}" "${TARGET_REFS_FILE}" | xargs -I {} git push target -f --delete {}
+    grep -Fvxf "${ORIGIN_REFS_FILE}" "${TARGET_REFS_FILE}" | xargs -I {} bash -c 'git_retry push target -f --delete "{}"'
 }
